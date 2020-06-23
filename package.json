@@ -1,0 +1,24 @@
+{
+  "name": "employee_tracker_db",
+  "version": "1.0.0",
+  "description": "Design the following database schema containing three tables that views and adds departments, roles, employees, and updates employee roles",
+  "main": "queries.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corielynch/employee_tracker_db.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/corielynch/employee_tracker_db/issues"
+  },
+  "homepage": "https://github.com/corielynch/employee_tracker_db#readme",
+  "dependencies": {
+    "inquirer": "^7.2.0",
+    "mysql": "^2.18.1"
+  }
+}
