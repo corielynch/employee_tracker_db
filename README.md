@@ -1,2 +1,2 @@
 # employee_tracker_db
-Design the following database schema containing three tables that views and adds departments, roles, employees, and updates employee roles
+A database schema containing three tables that views and adds departments, roles, employees, and updates employee roles. Users will be asked, via command line inquirer questions, about updating, adding or viewing a given employee database.
