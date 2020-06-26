@@ -54,17 +54,13 @@ function runSearch() {
         viewRole();
         break;
 
-    //     case "Remove Employee":
-    //     removeEmployee();
-    //     break;
+      case "Add Employee":
+        addEmployee();
+        break;
 
-    //     case "Update Employee Role":
-    //     updateRole();
-    //     break;
-
-    //     case "Update Employee Manager":
-    //     updateManager();
-    //     break;
+      case "View Employee":
+        viewEmployee();
+        break;
 
     //     case "exit":
     //     connection.end();
@@ -104,10 +100,7 @@ function departmentView() {
   });
 }
 
-
-
 function addRole() {
-   
     connection.query("SELECT concat(id,' - ', name) name FROM department", function(err, results){
          const departments = results.map(department => department);
 
@@ -147,111 +140,51 @@ function addRole() {
             runSearch();
           });
         });
-    })
-
-  
+    }) 
 }
 
-function employeeAdd() {
-  inquirer
-    .prompt({
-      name: "song",
-      type: "input",
-      message: "What song would you like to look for?"
-    })
-    .then(function(answer) {
-      console.log(answer.song);
-      connection.query("SELECT * FROM top5000 WHERE ?", { song: answer.song }, function(err, res) {
-        if (err) throw err;
-        console.log(
-          "Position: " +
-            res[0].position +
-            " || Song: " +
-            res[0].song +
-            " || Artist: " +
-            res[0].artist +
-            " || Year: " +
-            res[0].year
-        );
-        runSearch();
-      });
-    });
+function viewEmployee() {
+  var query = "SELECT * FROM employee";
+  connection.query(query, function(err, res) {
+    if (err) throw err;
+    console.table(res)
+    runSearch();
+  });
 }
+function addEmployee() {
+  connection.query("SELECT title FROM workplace_db.role", function(err, results){
+    const roles = results;
+    console.log(roles);
 
-function removeEmployee() {
-    inquirer
-      .prompt({
-        name: "song",
-        type: "input",
-        message: "What song would you like to look for?"
-      })
+      inquirer
+      .prompt([
+        {
+          name: "first_name",
+          type: "input",
+          message: "What is the employee's first name?"
+        },
+        {
+          name: "last_name",
+          type: "input",
+          message: "What is the employee's last name?"
+        },
+        {
+          name: "title",
+          type: "list",
+          message: "What is the employee's role?",
+          choices: roles
+        }
+      ])
       .then(function(answer) {
-        console.log(answer.song);
-        connection.query("SELECT * FROM top5000 WHERE ?", { song: answer.song }, function(err, res) {
+        const title = answer.title.split(" - ")
+          
+        var query = "INSERT INTO employee(first_name, last_name, role_id) values(?, ?, ?)";
+        connection.query(query, [answer.first_name, answer.last_name, role_id ], function(err, res) {
           if (err) throw err;
-          console.log(
-            "Position: " +
-              res[0].position +
-              " || Song: " +
-              res[0].song +
-              " || Artist: " +
-              res[0].artist +
-              " || Year: " +
-              res[0].year
-          );
+          console.log("Employee added!");
           runSearch();
         });
       });
-  }
+  }) 
+};
 
-  function updateRole() {
-    inquirer
-      .prompt({
-        name: "song",
-        type: "input",
-        message: "What song would you like to look for?"
-      })
-      .then(function(answer) {
-        console.log(answer.song);
-        connection.query("SELECT * FROM top5000 WHERE ?", { song: answer.song }, function(err, res) {
-          if (err) throw err;
-          console.log(
-            "Position: " +
-              res[0].position +
-              " || Song: " +
-              res[0].song +
-              " || Artist: " +
-              res[0].artist +
-              " || Year: " +
-              res[0].year
-          );
-          runSearch();
-        });
-      });
-  }
-
-  function updateManager() {
-    inquirer
-      .prompt({
-        name: "song",
-        type: "input",
-        message: "What song would you like to look for?"
-      })
-      .then(function(answer) {
-        console.log(answer.song);
-        connection.query("SELECT * FROM top5000 WHERE ?", { song: answer.song }, function(err, res) {
-          if (err) throw err;
-          console.log(
-            "Position: " +
-              res[0].position +
-              " || Song: " +
-              res[0].song +
-              " || Artist: " +
-              res[0].artist +
-              " || Year: " +
-              res[0].year
-          );
-          runSearch();
-        });
-      });
-  }
