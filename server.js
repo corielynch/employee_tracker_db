@@ -174,16 +174,15 @@ function addEmployee() {
           choices: roles
         }
       ])
-      // .then(function(answer) {
-      //   const title = answer.title.split(" - ")
+      .then(function(answer) {
           
-      //   var query = "INSERT INTO employee(first_name, last_name, role_id) values(?, ?, ?)";
-      //   connection.query(query, [answer.first_name, answer.last_name, role_id ], function(err, res) {
-      //     if (err) throw err;
-      //     console.log("Employee added!");
-      //     runSearch();
-      //   });
-      // });
+        var query = "INSERT INTO workplace_db.employee(first_name, last_name, role_id) values(?, ?, ?)";
+        connection.query(query, [answer.first_name, answer.last_name, answer.role_id ], function(err, res) {
+          if (err) throw err;
+          console.log("Employee added!");
+          runSearch();
+        });
+      });
   }) 
 };
 
