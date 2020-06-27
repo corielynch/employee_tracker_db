@@ -154,10 +154,7 @@ function viewEmployee() {
 function addEmployee() {
   connection.query("SELECT title FROM workplace_db.role", function(err, results){
     const roles = results.map(role=> role.title);
-    console.log(roles);
-
-    // const managers = results.map(manager => manager)
-
+    
       inquirer
       .prompt([
         {
@@ -176,22 +173,22 @@ function addEmployee() {
           message: "What is the employee's role?",
           choices: roles
         },
-        // {
-        //   name: "manager",
-        //   type: "list",
-        //   message: "Who is the employee's manager?",
-        //   choices: 
-        // }
+        
+          
       ])
       .then(function(answer) {
         const role_id = answer.title.split("-")
-        console.log(role_id);
         const id = role_id[0];
 
-        let query = "INSERT INTO workplace_db.employee(first_name, last_name, role_id) values(?, ?, ?)";
-        connection.query(query, [answer.first_name, answer.last_name, id ], function(err, res) {
+        const manager = answer.title.split("-").join(",");
+        const id_manager = manager[0];
+        console.log(id_manager);
+
+
+
+        let query = "INSERT INTO workplace_db.employee(first_name, last_name, role_id, manager_id) values(?, ?, ?, ?)";
+        connection.query(query, [answer.first_name, answer.last_name, id, id_manager], function(err, res) {
           if (err) throw err;
-          console.log("Employee added!");
           runSearch();
         });
       });
