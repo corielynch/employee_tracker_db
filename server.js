@@ -207,9 +207,11 @@ function updateEmployee() {
       ])
       .then(function(answer) {
         const newEmployeeRole = answer.first_name
+        console.log("THIS IS NEW EMPLOYEE ROLE " + newEmployeeRole);
+
 
         let query = "INSERT INTO workplace_db.employee(first_name) values(?)";
-        connection.query(query, [newEmployeeRole], function(err, res) {
+        connection.query(query, [newEmployeeRole], function(err, results) {
           if (err) throw err;
         })
 
@@ -229,11 +231,11 @@ function updateEmployee() {
         const role_id = answer.role_id
         const id = role_id[0];
 
-        let query = "INSERT INTO workplace_db.employee(role_id) values(?)";
-        connection.query(query, [id], function(err, res) {
+        let query = "INSERT INTO workplace_db.employee(first_name, role_id) values(?, ?)";
+        connection.query(query, [newEmployeeRole, id], function(err, res) {
           if (err) throw err;
           runSearch();
-        });
+        }); 
       });
     }); 
   }); 
