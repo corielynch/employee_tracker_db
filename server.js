@@ -62,9 +62,9 @@ function runSearch() {
         viewEmployee();
         break;
 
-    //     case "exit":
-    //     connection.end();
-    //     break;
+      case "Update Employee Role":
+        updateEmployee();
+        break;
       }
     });
 }
@@ -182,9 +182,6 @@ function addEmployee() {
 
         const manager = answer.title.split("-").join(",");
         const id_manager = manager[0];
-        console.log(id_manager);
-
-
 
         let query = "INSERT INTO workplace_db.employee(first_name, last_name, role_id, manager_id) values(?, ?, ?, ?)";
         connection.query(query, [answer.first_name, answer.last_name, id, id_manager], function(err, res) {
@@ -192,6 +189,48 @@ function addEmployee() {
           runSearch();
         });
       });
-  }) 
+  }); 
 };
+
+function updateEmployee() {
+  connection.query("SELECT first_name FROM workplace_db.employee", function(err, results){
+    const employees = results.map(employee => employee.first_name)
+    
+    inquirer
+      .prompt([
+        {
+          name: "first_name",
+          type: "list",
+          message: "Which employee would you like to update?",
+          choices: employees
+        }
+      ]);
+
+  connection.query("SELECT title FROM workplace_db.role", function(err, results){
+    const roles = results.map(role=> role.title);
+      console.log("this is roles" + roles);
+
+    inquirer
+      .prompt([
+        {
+          name: "role_id",
+          type: "list",
+          message: "What is the updated role for your employee?",
+          choices: roles
+        }
+      ])
+      .then(function(answer) {
+        const role_id = answer.title.split("-")
+        const id = role_id[0];
+
+        let query = "INSERT INTO workplace_db.employee(role_id) values(?)";
+        connection.query(query, [id], function(err, res) {
+          if (err) throw err;
+          runSearch();
+        });
+      });
+    }); 
+  }); 
+  };
+      
 
