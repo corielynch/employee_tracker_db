@@ -204,11 +204,17 @@ function updateEmployee() {
           message: "Which employee would you like to update?",
           choices: employees
         }
-      ]);
+      ])
+      .then(function(answer) {
+        const newEmployeeRole = answer.first_name
+
+        let query = "INSERT INTO workplace_db.employee(first_name) values(?)";
+        connection.query(query, [newEmployeeRole], function(err, res) {
+          if (err) throw err;
+        })
 
   connection.query("SELECT title FROM workplace_db.role", function(err, results){
-    const roles = results.map(role=> role.title);
-      console.log("this is roles" + roles);
+    const roles = results.map(role => role.title);
 
     inquirer
       .prompt([
@@ -220,7 +226,7 @@ function updateEmployee() {
         }
       ])
       .then(function(answer) {
-        const role_id = answer.title.split("-")
+        const role_id = answer.role_id
         const id = role_id[0];
 
         let query = "INSERT INTO workplace_db.employee(role_id) values(?)";
@@ -231,6 +237,6 @@ function updateEmployee() {
       });
     }); 
   }); 
-  };
+})};
       
 
